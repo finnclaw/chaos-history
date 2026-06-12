@@ -57,13 +57,12 @@ function setupEventListeners() {
     alert('How to Play:\n1. Select difficulty\n2. Answer questions\n3. Wrong answers spawn consequences\n4. Try to survive!');
   });
   
-  // Difficulty screen buttons - delegate from parent
-  document.getElementById('difficulty-screen').addEventListener('click', (e) => {
-    const card = e.target.closest('.difficulty-card');
-    if (card) {
-      const difficulty = card.dataset.difficulty;
+  // Difficulty screen buttons
+  document.querySelectorAll('.difficulty-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const difficulty = e.target.dataset.difficulty;
       startGame(difficulty);
-    }
+    });
   });
   
   document.getElementById('back-btn')?.addEventListener('click', () => {
