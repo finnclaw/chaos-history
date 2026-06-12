@@ -340,11 +340,11 @@ body {
 
 /* ===== SCREEN ===== */
 .screen {
-  display: none;
+  display: none !important;
 }
 
 .screen.active {
-  display: flex;
+  display: flex !important;
   flex-direction: column;
 }
 
