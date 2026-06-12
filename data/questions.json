@@ -1,0 +1,162 @@
+[
+  {
+    "id": "hist-001",
+    "question": "Who painted the Mona Lisa?",
+    "correct": "Leonardo da Vinci",
+    "wrong": ["Michelangelo", "Raphael", "Donatello"],
+    "category": "art",
+    "difficulty": "easy"
+  },
+  {
+    "id": "hist-002",
+    "question": "In what year did World War II end?",
+    "correct": "1945",
+    "wrong": ["1944", "1946", "1943"],
+    "category": "history",
+    "difficulty": "easy"
+  },
+  {
+    "id": "hist-003",
+    "question": "Who was the first President of the United States?",
+    "correct": "George Washington",
+    "wrong": ["Thomas Jefferson", "Abraham Lincoln", "John Adams"],
+    "category": "history",
+    "difficulty": "easy"
+  },
+  {
+    "id": "hist-004",
+    "question": "In what year did the Titanic sink?",
+    "correct": "1912",
+    "wrong": ["1905", "1918", "1920"],
+    "category": "history",
+    "difficulty": "medium"
+  },
+  {
+    "id": "hist-005",
+    "question": "Who discovered America in 1492?",
+    "correct": "Christopher Columbus",
+    "wrong": ["Amerigo Vespucci", "Leif Erikson", "Ferdinand Magellan"],
+    "category": "history",
+    "difficulty": "easy"
+  },
+  {
+    "id": "sci-001",
+    "question": "What planet is known as the Red Planet?",
+    "correct": "Mars",
+    "wrong": ["Venus", "Jupiter", "Saturn"],
+    "category": "science",
+    "difficulty": "easy"
+  },
+  {
+    "id": "sci-002",
+    "question": "What is H2O?",
+    "correct": "Water",
+    "wrong": ["Oxygen", "Hydrogen", "Carbon dioxide"],
+    "category": "science",
+    "difficulty": "easy"
+  },
+  {
+    "id": "sci-003",
+    "question": "What is the largest organ in the human body?",
+    "correct": "Skin",
+    "wrong": ["Heart", "Liver", "Brain"],
+    "category": "science",
+    "difficulty": "medium"
+  },
+  {
+    "id": "sci-004",
+    "question": "What gas do plants absorb from the air?",
+    "correct": "Carbon dioxide",
+    "wrong": ["Oxygen", "Nitrogen", "Hydrogen"],
+    "category": "science",
+    "difficulty": "easy"
+  },
+  {
+    "id": "sci-005",
+    "question": "What is the speed of light?",
+    "correct": "299,792 km/s",
+    "wrong": ["150,000 km/s", "500,000 km/s", "1,000,000 km/s"],
+    "category": "science",
+    "difficulty": "hard"
+  },
+  {
+    "id": "geo-001",
+    "question": "What is the capital of Australia?",
+    "correct": "Canberra",
+    "wrong": ["Sydney", "Melbourne", "Brisbane"],
+    "category": "geography",
+    "difficulty": "easy"
+  },
+  {
+    "id": "geo-002",
+    "question": "What is the largest country in the world?",
+    "correct": "Russia",
+    "wrong": ["Canada", "China", "United States"],
+    "category": "geography",
+    "difficulty": "easy"
+  },
+  {
+    "id": "geo-003",
+    "question": "What ocean is the largest?",
+    "correct": "Pacific Ocean",
+    "wrong": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean"],
+    "category": "geography",
+    "difficulty": "easy"
+  },
+  {
+    "id": "geo-004",
+    "question": "What is the longest river in the world?",
+    "correct": "Nile",
+    "wrong": ["Amazon", "Mississippi", "Yangtze"],
+    "category": "geography",
+    "difficulty": "medium"
+  },
+  {
+    "id": "geo-005",
+    "question": "How many continents are there?",
+    "correct": "7",
+    "wrong": ["5", "6", "8"],
+    "category": "geography",
+    "difficulty": "easy"
+  },
+  {
+    "id": "art-001",
+    "question": "Who painted the Starry Night?",
+    "correct": "Vincent van Gogh",
+    "wrong": ["Pablo Picasso", "Claude Monet", "Leonardo da Vinci"],
+    "category": "art",
+    "difficulty": "easy"
+  },
+  {
+    "id": "art-002",
+    "question": "What sport is played at Wimbledon?",
+    "correct": "Tennis",
+    "wrong": ["Cricket", "Golf", "Rugby"],
+    "category": "sports",
+    "difficulty": "easy"
+  },
+  {
+    "id": "art-003",
+    "question": "How many players are on a soccer team?",
+    "correct": "11",
+    "wrong": ["9", "10", "12"],
+    "category": "sports",
+    "difficulty": "easy"
+  },
+  {
+    "id": "art-004",
+    "question": "Who wrote Romeo and Juliet?",
+    "correct": "William Shakespeare",
+    "wrong": ["Charles Dickens", "Jane Austen", "Mark Twain"],
+    "category": "art",
+    "difficulty": "easy"
+  },
+  {
+    "id": "art-005",
+    "question": "What instrument has 88 keys?",
+    "correct": "Piano",
+    "wrong": ["Guitar", "Violin", "Drums"],
+    "category": "art",
+    "difficulty": "easy"
+  }
+]

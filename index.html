@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chaos History - A Trivia Game</title>
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Title Screen -->
+    <div id="title-screen" class="screen active">
+      <div class="title-content">
+        <h1>CHAOS HISTORY</h1>
+        <p class="subtitle">A trivia game where wrong answers have consequences</p>
+        <button id="start-btn" class="btn btn-primary">START GAME</button>
+        <button id="leaderboard-btn" class="btn btn-secondary">LEADERBOARD</button>
+        <button id="how-to-play-btn" class="btn btn-text">HOW TO PLAY</button>
+        <p id="high-score-display" class="high-score"></p>
+      </div>
+    </div>
+    
+    <!-- Difficulty Screen -->
+    <div id="difficulty-screen" class="screen">
+      <h2>SELECT DIFFICULTY</h2>
+      <button class="difficulty-btn" data-difficulty="kids">👶 Kids Mode</button>
+      <button class="difficulty-btn" data-difficulty="easy">🌱 Easy</button>
+      <button class="difficulty-btn" data-difficulty="medium">🔥 Medium</button>
+      <button class="difficulty-btn" data-difficulty="hard">💀 Hard</button>
+      <button id="back-btn" class="btn btn-text">BACK</button>
+    </div>
+    
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+      <div id="consequences-container"></div>
+      <div class="game-header">
+        <span id="score-display">0 pts</span>
+        <span id="defcon-display">DEFCON 5</span>
+        <span id="streak-display">🔥 x0</span>
+      </div>
+      <div class="timer-bar">
+        <div id="timer-fill"></div>
+      </div>
+      <div class="question-area">
+        <p id="question-number">Question 1 / 10</p>
+        <p id="question-text">Question goes here</p>
+        <span id="category-badge">CATEGORY</span>
+      </div>
+      <div class="answers-grid">
+        <button class="answer-btn" data-index="0">Answer 1</button>
+        <button class="answer-btn" data-index="1">Answer 2</button>
+        <button class="answer-btn" data-index="2">Answer 3</button>
+        <button class="answer-btn" data-index="3">Answer 4</button>
+      </div>
+    </div>
+    
+    <!-- Game Over Screen -->
+    <div id="game-over-screen" class="screen">
+      <h1>GAME OVER</h1>
+      <p id="final-score">0</p>
+      <div class="stats">
+        <p>Correct: <span id="correct-count">0</span></p>
+        <p>Wrong: <span id="wrong-count">0</span></p>
+        <p>Best Streak: <span id="best-streak">0</span></p>
+      </div>
+      <button id="play-again-btn" class="btn btn-primary">PLAY AGAIN</button>
+      <button id="share-btn" class="btn btn-secondary">SHARE</button>
+      <button id="main-menu-btn" class="btn btn-text">MAIN MENU</button>
+    </div>
+  </div>
+  
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
