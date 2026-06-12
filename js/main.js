@@ -58,9 +58,9 @@ function setupEventListeners() {
   });
   
   // Difficulty screen buttons
-  document.querySelectorAll('.difficulty-btn').forEach(btn => {
+  document.querySelectorAll('.difficulty-card').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      const difficulty = e.target.dataset.difficulty;
+      const difficulty = btn.dataset.difficulty;
       startGame(difficulty);
     });
   });
