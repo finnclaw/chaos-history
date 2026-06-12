@@ -228,7 +228,7 @@ function handleAnswer(answerIndex) {
     gameState.score += points;
     
     // Visual feedback
-    document.querySelectorAll('.answer-btn')[answerIndex].style.backgroundColor = 'var(--success)';
+    document.querySelectorAll('.answer-btn')[answerIndex].classList.add('correct');
   } else {
     // WRONG ANSWER
     console.log('Wrong! Correct was:', correctAnswer);
@@ -240,7 +240,7 @@ function handleAnswer(answerIndex) {
     spawnConsequence(currentQuestion.category);
     
     // Visual feedback
-    document.querySelectorAll('.answer-btn')[answerIndex].style.backgroundColor = 'var(--accent)';
+    document.querySelectorAll('.answer-btn')[answerIndex].classList.add('wrong');
   }
   
   gameState.questionNum++;
@@ -312,7 +312,7 @@ function loadNextQuestion() {
   
   document.querySelectorAll('.answer-btn').forEach((btn, i) => {
     btn.textContent = answers[i];
-    btn.style.backgroundColor = '';
+    btn.classList.remove('correct', 'wrong');
   });
   
   // Reset timer

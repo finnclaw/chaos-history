@@ -23,10 +23,26 @@
     <!-- Difficulty Screen -->
     <div id="difficulty-screen" class="screen">
       <h2>SELECT DIFFICULTY</h2>
-      <button class="difficulty-btn" data-difficulty="kids">👶 Kids Mode</button>
-      <button class="difficulty-btn" data-difficulty="easy">🌱 Easy</button>
-      <button class="difficulty-btn" data-difficulty="medium">🔥 Medium</button>
-      <button class="difficulty-btn" data-difficulty="hard">💀 Hard</button>
+      <div class="difficulty-card" data-difficulty="kids">
+        <div class="difficulty-emoji">👶</div>
+        <div class="difficulty-name">Kids Mode</div>
+        <div class="difficulty-desc">No timer, silly consequences</div>
+      </div>
+      <div class="difficulty-card" data-difficulty="easy">
+        <div class="difficulty-emoji">🌱</div>
+        <div class="difficulty-name">Easy</div>
+        <div class="difficulty-desc">30 seconds, basic questions</div>
+      </div>
+      <div class="difficulty-card" data-difficulty="medium">
+        <div class="difficulty-emoji">🔥</div>
+        <div class="difficulty-name">Medium</div>
+        <div class="difficulty-desc">20 seconds, mixed categories</div>
+      </div>
+      <div class="difficulty-card" data-difficulty="hard">
+        <div class="difficulty-emoji">💀</div>
+        <div class="difficulty-name">Hard</div>
+        <div class="difficulty-desc">15 seconds, niche knowledge</div>
+      </div>
       <button id="back-btn" class="btn btn-text">BACK</button>
     </div>
     
