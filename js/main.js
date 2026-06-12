@@ -58,8 +58,11 @@ function setupEventListeners() {
   });
   
   // Difficulty screen buttons
+  console.log('Setting up difficulty buttons');
   document.querySelectorAll('.difficulty-btn').forEach(btn => {
+    console.log('Found button:', btn.dataset.difficulty);
     btn.addEventListener('click', (e) => {
+      console.log('Clicked difficulty:', e.target.dataset.difficulty);
       const difficulty = e.target.dataset.difficulty;
       startGame(difficulty);
     });
