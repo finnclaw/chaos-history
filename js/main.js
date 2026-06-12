@@ -1,4 +1,5 @@
 // main.js - Entry point and router
+// VERSION: CLEAN
 
 // State
 let gameState = {
@@ -13,269 +14,128 @@ let gameState = {
   wrongAnswers: []
 };
 
-// Questions data
+// Questions
 let allQuestions = [];
 let currentQuestion = null;
 
-// Initialize game
+// Initialize
 async function init() {
-  console.log('INIT CALLED');
-  console.log('Initializing Chaos History...');
+  console.log('INIT');
   
   // Load questions
   try {
     const response = await fetch('data/questions.json');
     allQuestions = await response.json();
-    console.log('Loaded questions:', allQuestions.length);
   } catch (e) {
-    console.error('Failed to load questions:', e);
+    console.error('Load failed:', e);
   }
   
-  // Set up event listeners
-  setupEventListeners();
+  // Setup events
+  setupEvents();
   
-  // Load high score
-  loadHighScore();
-  
-  // Show title screen
+  // Show title
   showScreen('title');
 }
 
-// Set up button event listeners
-function setupEventListeners() {
-  console.log('SETUP EVENT LISTENERS CALLED');
-  // Title screen buttons
-  document.getElementById('start-btn')?.addEventListener('click', () => {
-    showScreen('difficulty');
-  });
+// Setup all event listeners
+function setupEvents() {
+  console.log('SETUP EVENTS');
   
-  document.getElementById('leaderboard-btn')?.addEventListener('click', () => {
-    console.log('Show leaderboard');
-    alert('Leaderboard coming soon!');
-  });
+  // Start button
+  document.getElementById('start-btn').onclick = () => showScreen('difficulty');
   
-  document.getElementById('how-to-play-btn')?.addEventListener('click', () => {
-    console.log('Show how to play');
-    alert('How to Play:\n1. Select difficulty\n2. Answer questions\n3. Wrong answers spawn consequences\n4. Try to survive!');
-  });
-  
-  // Difficulty screen buttons
-  console.log('Setting up difficulty buttons');
+  // Difficulty buttons
   document.querySelectorAll('.difficulty-btn').forEach(btn => {
-    console.log('Found button:', btn.dataset.difficulty);
-    btn.addEventListener('click', (e) => {
-      console.log('Clicked difficulty:', e.target.dataset.difficulty);
-      const difficulty = e.target.dataset.difficulty;
-      startGame(difficulty);
-    });
+    btn.onclick = () => startGame(btn.dataset.difficulty);
   });
   
-  document.getElementById('back-btn')?.addEventListener('click', () => {
-    showScreen('title');
-  });
+  // Back button
+  document.getElementById('back-btn').onclick = () => showScreen('title');
   
-  // Answer buttons (will be used in game)
-  document.querySelectorAll('.answer-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const answerIndex = parseInt(e.target.dataset.index);
-      handleAnswer(answerIndex);
-    });
+  // Answer buttons
+  document.querySelectorAll('.answer-btn').forEach((btn, i) => {
+    btn.onclick = () => handleAnswer(i);
   });
   
   // Game over buttons
-  document.getElementById('play-again-btn')?.addEventListener('click', () => {
-    showScreen('difficulty');
-  });
+  document.getElementById('play-again-btn').onclick = () => showScreen('difficulty');
+  document.getElementById('main-menu-btn').onclick = () => showScreen('title');
   
-  document.getElementById('share-btn')?.addEventListener('click', () => {
-    console.log('Share score');
-    alert(`Score: ${gameState.score}\nShare coming soon!`);
-  });
-  
-  document.getElementById('main-menu-btn')?.addEventListener('click', () => {
-    showScreen('title');
-  });
+  console.log('EVENTS READY');
 }
 
-// Switch screens
-function showScreen(screenName) {
-  const screens = document.querySelectorAll('.screen');
-  screens.forEach(screen => {
-    screen.classList.remove('active');
-  });
-  
-  const targetScreen = document.getElementById(`${screenName}-screen`);
-  if (targetScreen) {
-    targetScreen.classList.add('active');
-  }
+// Show screen
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(name + '-screen').classList.add('active');
 }
 
-// Start game with difficulty
+// Start game
 function startGame(difficulty) {
-  console.log('Starting game with difficulty:', difficulty);
-  
-  gameState = {
-    score: 0,
-    streak: 0,
-    bestStreak: 0,
-    defcon: 5,
-    difficulty: difficulty,
-    questionNum: 0,
-    questionsAnswered: 0,
-    correctAnswers: 0,
-    wrongAnswers: []
-  };
-  
-  updateGameDisplay();
+  console.log('START:', difficulty);
+  gameState = { score: 0, streak: 0, bestStreak: 0, defcon: 5, difficulty, questionNum: 0, questionsAnswered: 0, correctAnswers: 0, wrongAnswers: [] };
+  updateDisplay();
   showScreen('game');
-  
-  // Load first question
-  loadNextQuestion();
+  loadQuestion();
 }
 
-// ===== CONSEQUENCES SYSTEM =====
-
-// Character definitions
-const characters = {
-  napoleon: {
-    name: 'Napoleon',
-    category: 'history',
-    catchphrases: ["Perhaps you should have studied more...", "Have you considered you might be wrong?"],
-    spawnPosition: { top: '10%', right: '10%' }
-  },
-  einstein: {
-    name: 'Einstein',
-    category: 'science',
-    catchphrases: ["Actually, E=mc² is more of a guideline...", "Did you even study physics?"],
-    spawnPosition: { top: '20%', left: '10%' }
-  },
-  triviaGnome: {
-    name: 'Trivia Gnome',
-    category: 'general',
-    catchphrases: ["Wrong again, mortal.", "The gnomes are displeased."],
-    spawnPosition: { bottom: '10%', right: '20%' }
-  },
-  paintingJudge: {
-    name: 'Painting Judge',
-    category: 'art',
-    catchphrases: ["This is not proper composition.", "The art world is disappointed."],
-    spawnPosition: { top: '15%', right: '15%' }
-  },
-  sportsCommentator: {
-    name: 'Sports Commentator',
-    category: 'sports',
-    catchphrases: ["And that's another miss...", "The crowd goes mild."],
-    spawnPosition: { bottom: '15%', left: '10%' }
-  }
-};
-
-// Active characters
-let activeCharacters = [];
-
-// Calculate Defcon
-function calculateDefcon(wrongCount) {
-  if (wrongCount === 0) return 5;
-  if (wrongCount === 1) return 4;
-  if (wrongCount <= 3) return 3;
-  if (wrongCount <= 5) return 2;
-  return 1;
+// Load question
+function loadQuestion() {
+  const q = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+  currentQuestion = q;
+  
+  document.getElementById('question-number').textContent = `Question ${gameState.questionNum + 1} / 10`;
+  document.getElementById('question-text').textContent = q.question;
+  document.getElementById('category-badge').textContent = q.category.toUpperCase();
+  
+  const answers = [q.correct, ...q.wrong].sort(() => Math.random() - 0.5);
+  document.querySelectorAll('.answer-btn').forEach((btn, i) => {
+    btn.textContent = answers[i];
+  });
+  
+  resetTimer();
 }
 
-// Spawn consequence
-function spawnConsequence(questionCategory) {
-  const categoryCharacters = Object.entries(characters).filter(([key, char]) => char.category === questionCategory);
-  const characterKey = categoryCharacters.length > 0 
-    ? categoryCharacters[Math.floor(Math.random() * categoryCharacters.length)][0] 
-    : 'triviaGnome';
+// Handle answer
+function handleAnswer(index) {
+  const selected = document.querySelectorAll('.answer-btn')[index].textContent;
+  const correct = currentQuestion.correct;
   
-  const character = characters[characterKey];
-  
-  // Create element
-  const container = document.getElementById('consequences-container') || document.createElement('div');
-  container.id = 'consequences-container';
-  document.body.appendChild(container);
-  
-  const charEl = document.createElement('div');
-  charEl.className = 'consequence-character';
-  charEl.style.cssText = `position:fixed;${character.spawnPosition.top ? 'top:'+character.spawnPosition.top:''};${character.spawnPosition.bottom?'bottom:'+character.spawnPosition.bottom:''};${character.spawnPosition.left?'left:'+character.spawnPosition.left:''};${character.spawnPosition.right?'right:'+character.spawnPosition.right:''};background:#1a1a1a;border:2px solid #e63946;border-radius:12px;padding:12px;max-width:200px;z-index:100;animation:spawnIn 0.5s ease-out`;
-  
-  const catchphrase = character.catchphrases[Math.floor(Math.random() * character.catchphrases.length)];
-  charEl.innerHTML = `<div style="font-weight:bold;margin-bottom:8px">${character.name}</div><div style="color:#888;font-style:italic;font-size:14px">${catchphrase}</div>`;
-  
-  container.appendChild(charEl);
-  
-  // Remove after 5 seconds
-  setTimeout(() => {
-    charEl.style.animation = 'spawnOut 0.5s ease-in';
-    setTimeout(() => charEl.remove(), 500);
-  }, 5000);
-}
-
-// ===== HANDLE ANSWER =====
-function handleAnswer(answerIndex) {
-  console.log('Answer selected:', answerIndex);
-  
-  // Get selected answer
-  const selectedAnswer = document.querySelectorAll('.answer-btn')[answerIndex].textContent;
-  const correctAnswer = currentQuestion.correct;
-  
-  // Check if correct
-  if (selectedAnswer === correctAnswer) {
-    // CORRECT ANSWER
-    console.log('Correct!');
+  if (selected === correct) {
     gameState.correctAnswers++;
     gameState.streak++;
-    gameState.bestStreak = Math.max(gameState.bestStreak, gameState.streak);
-    
-    // Scoring: base 100 + streak bonus
-    const streakBonus = Math.min(gameState.streak * 10, 50);
-    const points = 100 + streakBonus;
-    gameState.score += points;
-    
-    // Visual feedback
-    document.querySelectorAll('.answer-btn')[answerIndex].classList.add('correct');
+    gameState.score += 100 + Math.min(gameState.streak * 10, 50);
+    document.querySelectorAll('.answer-btn')[index].style.background = 'var(--success)';
   } else {
-    // WRONG ANSWER
-    console.log('Wrong! Correct was:', correctAnswer);
     gameState.wrongAnswers.push(currentQuestion.id);
     gameState.streak = 0;
-    gameState.defcon = calculateDefcon(gameState.wrongAnswers.length);
-    
-    // SPAWN CONSEQUENCE
+    gameState.defcon = Math.max(1, gameState.defcon - 1);
     spawnConsequence(currentQuestion.category);
-    
-    // Visual feedback
-    document.querySelectorAll('.answer-btn')[answerIndex].classList.add('wrong');
+    document.querySelectorAll('.answer-btn')[index].style.background = 'var(--accent)';
   }
   
   gameState.questionNum++;
-  gameState.questionsAnswered++;
+  updateDisplay();
   
-  updateGameDisplay();
-  
-  // Check if game over (10 questions)
   if (gameState.questionNum >= 10) {
     endGame();
-    return;
+  } else {
+    setTimeout(loadQuestion, 1000);
   }
-  
-  // Load next question after delay
-  setTimeout(() => {
-    loadNextQuestion();
-  }, 1000);
+}
+
+// Update display
+function updateDisplay() {
+  document.getElementById('score-display').textContent = gameState.score + ' pts';
+  document.getElementById('defcon-display').textContent = 'DEFCON ' + gameState.defcon;
+  document.getElementById('streak-display').textContent = '🔥 x' + gameState.streak;
 }
 
 // End game
 function endGame() {
-  console.log('Game over! Score:', gameState.score);
+  const hs = localStorage.getItem('chaosHistory_highScore') || 0;
+  if (gameState.score > hs) localStorage.setItem('chaosHistory_highScore', gameState.score);
   
-  // Save high score
-  const highScore = localStorage.getItem('chaosHistory_highScore') || 0;
-  if (gameState.score > highScore) {
-    localStorage.setItem('chaosHistory_highScore', gameState.score);
-  }
-  
-  // Update game over screen
   document.getElementById('final-score').textContent = gameState.score;
   document.getElementById('correct-count').textContent = gameState.correctAnswers;
   document.getElementById('wrong-count').textContent = gameState.wrongAnswers.length;
@@ -284,115 +144,42 @@ function endGame() {
   showScreen('gameOver');
 }
 
-// Load next question
-function loadNextQuestion() {
-  // Get random question based on difficulty
-  const availableQuestions = allQuestions.filter(q => 
-    q.difficulty === gameState.difficulty || q.difficulty === 'easy'
-  );
-  
-  if (availableQuestions.length === 0) {
-    // No questions left - end game
-    endGame();
-    return;
-  }
-  
-  // Pick random question
-  const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-  currentQuestion = availableQuestions[randomIndex];
-  
-  // Remove from pool to avoid repeats
-  const idx = allQuestions.indexOf(currentQuestion);
-  if (idx > -1) allQuestions.splice(idx, 1);
-  
-  // Update display
-  document.getElementById('question-number').textContent = 
-    `Question ${gameState.questionNum + 1} / 10`;
-  document.getElementById('question-text').textContent = currentQuestion.question;
-  document.getElementById('category-badge').textContent = currentQuestion.category.toUpperCase();
-  
-  // Shuffle answers
-  const answers = [currentQuestion.correct, ...currentQuestion.wrong];
-  shuffleArray(answers);
-  
-  document.querySelectorAll('.answer-btn').forEach((btn, i) => {
-    btn.textContent = answers[i];
-    btn.classList.remove('correct', 'wrong');
-  });
-  
-  // Reset timer
-  resetTimer();
-}
-
-// Shuffle array
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-  return array;
-}
-
 // Timer
-let timerInterval = null;
-let timeRemaining = 30000;
-
+let timerInterval;
 function resetTimer() {
   clearInterval(timerInterval);
-  timeRemaining = 30000;
-  
-  const timerFill = document.getElementById('timer-fill');
+  let time = 30000;
+  const fill = document.getElementById('timer-fill');
   
   timerInterval = setInterval(() => {
-    timeRemaining -= 100;
-    const percent = (timeRemaining / 30000) * 100;
-    timerFill.style.width = `${percent}%`;
-    
-    // Color changes
-    if (percent < 25) {
-      timerFill.style.backgroundColor = 'var(--defcon-1)';
-    } else if (percent < 50) {
-      timerFill.style.backgroundColor = 'var(--defcon-3)';
-    } else {
-      timerFill.style.backgroundColor = 'var(--success)';
-    }
-    
-    if (timeRemaining <= 0) {
+    time -= 100;
+    fill.style.width = (time / 30000 * 100) + '%';
+    if (time <= 0) {
       clearInterval(timerInterval);
-      handleTimeout();
+      handleAnswer(-1); // timeout = wrong
     }
   }, 100);
 }
 
-function handleTimeout() {
-  console.log('Time out!');
-  gameState.wrongAnswers.push(gameState.questionNum);
-  gameState.questionNum++;
-  gameState.questionsAnswered++;
-  gameState.streak = 0;
-  gameState.defcon = Math.max(1, gameState.defcon - 1);
+// Consequence spawn
+function spawnConsequence(category) {
+  const chars = {
+    history: { name: 'Napoleon', msg: "Perhaps you should have studied more..." },
+    science: { name: 'Einstein', msg: "Actually, E=mc² is more of a guideline..." },
+    sports: { name: 'Sports Commentator', msg: "The crowd goes mild." },
+    art: { name: 'Painting Judge', msg: "This is not proper composition." },
+    geography: { name: 'Map Glitch', msg: "That's not where that is..." }
+  };
   
-  updateGameDisplay();
-  loadNextQuestion();
+  const char = chars[category] || chars.sports;
+  
+  const div = document.createElement('div');
+  div.style.cssText = 'position:fixed;top:20%;right:10%;background:#1a1a1a;border:2px solid #e63946;border-radius:12px;padding:16px;z-index:100;';
+  div.innerHTML = `<div style="color:#e63946;font-weight:bold;margin-bottom:8px">${char.name}</div><div style="color:#888;font-style:italic">${char.msg}</div>`;
+  document.body.appendChild(div);
+  
+  setTimeout(() => div.remove(), 5000);
 }
 
-// Update game display
-function updateGameDisplay() {
-  document.getElementById('score-display').textContent = `${gameState.score} pts`;
-  document.getElementById('defcon-display').textContent = `DEFCON ${gameState.defcon}`;
-  document.getElementById('streak-display').textContent = `🔥 x${gameState.streak}`;
-}
-
-// Load high score from LocalStorage
-function loadHighScore() {
-  const highScore = localStorage.getItem('chaosHistory_highScore') || 0;
-  const highScoreEl = document.getElementById('high-score-display');
-  if (highScoreEl) {
-    highScoreEl.textContent = `High Score: ${highScore}`;
-  }
-}
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', init);
+// Start
+init();
