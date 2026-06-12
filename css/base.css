@@ -23,30 +23,42 @@
 
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
-  background-color: var(--bg-primary);
+  background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 50%, #0d0d0d 100%);
   color: var(--text-primary);
   min-height: 100vh;
+  background-attachment: fixed;
 }
 
 #app {
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Buttons */
 .btn, .difficulty-btn, .answer-btn {
   display: block;
   width: 100%;
-  padding: 16px;
-  margin: 8px 0;
+  padding: 18px 24px;
+  margin: 10px 0;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 18px;
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.1s, opacity 0.2s;
-  background-color: var(--bg-secondary);
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
   color: var(--text-primary);
+  border: 1px solid #444;
+}
+
+.btn:hover, .difficulty-btn:hover, .answer-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  border-color: var(--accent);
 }
 
 .btn:active, .difficulty-btn:active, .answer-btn:active {
@@ -54,16 +66,19 @@ body {
 }
 
 .btn-primary {
-  background-color: var(--accent);
+  background: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
+  font-size: 20px;
+  letter-spacing: 1px;
 }
 
 .btn-secondary {
-  background-color: var(--bg-secondary);
+  background: linear-gradient(135deg, #333 0%, #222 100%);
 }
 
 .btn-text {
   background: transparent;
   color: var(--text-muted);
+  border: none;
 }
 
 /* Screen */
@@ -78,17 +93,27 @@ body {
 /* Title Screen */
 .title-content {
   text-align: center;
-  padding: 40px 0;
+  padding: 60px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .title-content h1 {
-  font-size: 48px;
+  font-size: 42px;
   margin-bottom: 16px;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #e63946 0%, #f4a261 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .title-content .subtitle {
   color: var(--text-muted);
   margin-bottom: 40px;
+  font-size: 16px;
 }
 
 .high-score {
@@ -114,18 +139,26 @@ body {
 .game-header {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  background-color: var(--bg-secondary);
-  border-radius: 8px;
-  margin-bottom: 10px;
+  align-items: center;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #333;
+}
+
+.game-header > span {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .timer-bar {
-  height: 8px;
-  background-color: var(--bg-secondary);
-  border-radius: 4px;
+  height: 6px;
+  background: #222;
+  border-radius: 3px;
   overflow: hidden;
   margin-bottom: 20px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
 }
 
 #timer-fill {
@@ -137,32 +170,64 @@ body {
 
 .question-area {
   text-align: center;
-  padding: 20px;
+  padding: 24px 20px;
   margin-bottom: 20px;
+  background: rgba(26, 26, 26, 0.8);
+  border-radius: 16px;
+  border: 1px solid #333;
 }
 
 #question-number {
   color: var(--text-muted);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 #question-text {
-  font-size: 24px;
-  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  line-height: 1.4;
 }
 
 #category-badge {
   display: inline-block;
-  padding: 4px 12px;
-  background-color: var(--accent-secondary);
-  border-radius: 4px;
-  font-size: 14px;
+  padding: 6px 16px;
+  background: linear-gradient(135deg, #f4a261 0%, #e76f51 100%);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #000;
 }
 
 .answers-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
+  margin-top: auto;
+  padding-bottom: 20px;
+}
+
+.answer-btn {
+  padding: 24px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.3;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 2px solid #444;
+}
+
+.answer-btn:hover {
+  border-color: var(--accent);
 }
 
 /* Game Over Screen */
