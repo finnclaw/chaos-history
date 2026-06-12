@@ -19,6 +19,7 @@ let currentQuestion = null;
 
 // Initialize game
 async function init() {
+  console.log('INIT CALLED');
   console.log('Initializing Chaos History...');
   
   // Load questions
@@ -42,6 +43,7 @@ async function init() {
 
 // Set up button event listeners
 function setupEventListeners() {
+  console.log('SETUP EVENT LISTENERS CALLED');
   // Title screen buttons
   document.getElementById('start-btn')?.addEventListener('click', () => {
     showScreen('difficulty');
